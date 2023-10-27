@@ -7,3 +7,6 @@
 1. 下载或克隆这个仓库到你的本地。
 2. 在你的html文件中，引入Chart.js的库文件，<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+# 声明
+
+该代码由Bing AI生成，仅供后端测试使用
