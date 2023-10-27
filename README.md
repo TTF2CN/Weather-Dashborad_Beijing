@@ -5,7 +5,8 @@
 ## 如何使用
 
 1. 下载或克隆这个仓库到你的本地。
-2. 在你的html文件中，引入Chart.js的库文件，<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+2. 在代码13-16行<your key>部分替换您的API Key（测试使用高德地图开发者平台天气数据API）.
+3. (可选）在https://lbs.amap.com/api/webservice/download中下载城市编码表查询您所需要的城市和地区，替换13-16行中的city部分。
 
 # 声明
 
