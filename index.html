@@ -1,0 +1,83 @@
+<html>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+        }
+    </style>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+</head>
+<body>
+    <h1>北京各个区的平均温度</h1>
+    <table>
+        <tr>
+            <th>区域</th>
+            <th>平均温度</th>
+        </tr>
+        <tr>
+            <td>海淀</td>
+            <td>19$^\circ$C</td>
+        </tr>
+        <tr>
+            <td>朝阳</td>
+            <td>19$^\circ$C</td>
+        </tr>
+        <tr>
+            <td>顺义</td>
+            <td>19$^\circ$C</td>
+        </tr>
+        <tr>
+            <td>怀柔</td>
+            <td>19$^\circ$C</td>
+        </tr>
+        <tr>
+            <td>延庆</td>
+            <td>5$^\circ$C</td>
+        </tr>
+        <tr>
+            <td>密云</td>
+            <td>6$^\circ$C</td>
+        </tr>
+        <!-- 你可以在这里添加更多的区域和温度数据 -->
+    </table>
+
+    <!-- 添加一个用于显示图像的div元素 -->
+    <div id="temp-chart" style="width: 600px;height:400px;"></div>
+
+    <!-- 添加一个用于生成图像的script元素 -->
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('temp-chart'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '北京各个区的平均温度'
+            },
+            tooltip: {},
+            legend: {
+                data:['平均温度']
+            },
+            xAxis: {
+                data: ["海淀","朝阳","顺义","怀柔","延庆","密云"]
+            },
+            yAxis: {},
+            series: [{
+                name: '平均温度',
+                type: 'bar',
+                data: [19, 19, 19, 19, 5, 6]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+</body>
+</html>
+
