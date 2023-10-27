@@ -1,6 +1,6 @@
-<!-- ÌìÆøÃæ°åµÄhtml´úÂë -->
+<!-- å¤©æ°”é¢æ¿çš„htmlä»£ç  -->
 <div class="weather-panel">
-  <h1>±±¾©ÊĞ²»Í¬ÇøÓòµÄÌìÆø</h1>
+  <h1>åŒ—äº¬å¸‚ä¸åŒåŒºåŸŸçš„å¤©æ°”</h1>
   <div id="weatherTable"></div>
   <canvas id="tempChart"></canvas>
 </div>
@@ -8,51 +8,51 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  // ¶¨ÒåÒ»¸öÊı×é£¬´æ´¢²»Í¬ÇøÓòµÄÃû³ÆºÍÁ´½Ó
+  // å®šä¹‰ä¸€ä¸ªæ•°ç»„ï¼Œå­˜å‚¨ä¸åŒåŒºåŸŸçš„åç§°å’Œé“¾æ¥
   const areas = [
-    {name: "¶«³ÇÇø", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110101&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"},
-    {name: "Î÷³ÇÇø", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110102&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"},
-    {name: "³¯ÑôÇø", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110105&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"},
-    {name: "²ıÆ½Çø", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110114&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"}
+    {name: "ä¸œåŸåŒº", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110101&key=<your key>&output=JSON"},
+    {name: "è¥¿åŸåŒº", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110102&key=<your key>&output=JSON"},
+    {name: "æœé˜³åŒº", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110105&key=<your key>&output=JSON"},
+    {name: "æ˜Œå¹³åŒº", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110114&key=<your key>&output=JSON"}
   ];
 
-  // ¶¨ÒåÒ»¸öº¯Êı£¬»ñÈ¡ÌìÆøÊı¾İ²¢ÏÔÊ¾ÔÚ±í¸ñºÍÍ¼±íÖĞ
+  // å®šä¹‰ä¸€ä¸ªå‡½æ•°ï¼Œè·å–å¤©æ°”æ•°æ®å¹¶æ˜¾ç¤ºåœ¨è¡¨æ ¼å’Œå›¾è¡¨ä¸­
   async function getWeather() {
-    // ¶¨ÒåÒ»¸ö¿ÕÊı×é£¬´æ´¢ÇøÓòÃû³Æ
+    // å®šä¹‰ä¸€ä¸ªç©ºæ•°ç»„ï¼Œå­˜å‚¨åŒºåŸŸåç§°
     let areaNames = [];
-    // ¶¨ÒåÒ»¸ö¿ÕÊı×é£¬´æ´¢Æ½¾ùÎÂ¶È
+    // å®šä¹‰ä¸€ä¸ªç©ºæ•°ç»„ï¼Œå­˜å‚¨å¹³å‡æ¸©åº¦
     let tempValues = [];
-    // ¶¨ÒåÒ»¸ö¿ÕÊı×é£¬´æ´¢ÌìÆøÃèÊö
+    // å®šä¹‰ä¸€ä¸ªç©ºæ•°ç»„ï¼Œå­˜å‚¨å¤©æ°”æè¿°
     let descValues = [];
-    // ¶¨ÒåÒ»¸ö¿Õ×Ö·û´®£¬´æ´¢±í¸ñµÄhtmlÄÚÈİ
+    // å®šä¹‰ä¸€ä¸ªç©ºå­—ç¬¦ä¸²ï¼Œå­˜å‚¨è¡¨æ ¼çš„htmlå†…å®¹
     let tableHtml = "";
-    // ±éÀúÇøÓòÊı×é
+    // éå†åŒºåŸŸæ•°ç»„
     for (let area of areas) {
-      // »ñÈ¡ÇøÓòÃû³ÆºÍÁ´½Ó
+      // è·å–åŒºåŸŸåç§°å’Œé“¾æ¥
       let name = area.name;
       let url = area.url;
-      // ·¢ËÍÇëÇó£¬»ñÈ¡ÌìÆøÊı¾İ
+      // å‘é€è¯·æ±‚ï¼Œè·å–å¤©æ°”æ•°æ®
       let response = await fetch(url);
       let data = await response.json();
-      // »ñÈ¡Æ½¾ùÎÂ¶ÈºÍÌìÆøÃèÊö
+      // è·å–å¹³å‡æ¸©åº¦å’Œå¤©æ°”æè¿°
       let temp = data.lives[0].temperature;
       let desc = data.lives[0].weather;
-      // ½«ÇøÓòÃû³Æ£¬Æ½¾ùÎÂ¶ÈºÍÌìÆøÃèÊö·Ö±ğÌí¼Óµ½¶ÔÓ¦µÄÊı×éÖĞ
+      // å°†åŒºåŸŸåç§°ï¼Œå¹³å‡æ¸©åº¦å’Œå¤©æ°”æè¿°åˆ†åˆ«æ·»åŠ åˆ°å¯¹åº”çš„æ•°ç»„ä¸­
       areaNames.push(name);
       tempValues.push(temp);
       descValues.push(desc);
-      // ½«±í¸ñµÄÃ¿Ò»ĞĞµÄhtmlÄÚÈİÌí¼Óµ½±í¸ñ×Ö·û´®ÖĞ
-      tableHtml += `<tr><td>${name}</td><td>${temp}¡æ</td><td>${desc}</td></tr>`;
+      // å°†è¡¨æ ¼çš„æ¯ä¸€è¡Œçš„htmlå†…å®¹æ·»åŠ åˆ°è¡¨æ ¼å­—ç¬¦ä¸²ä¸­
+      tableHtml += `<tr><td>${name}</td><td>${temp}â„ƒ</td><td>${desc}</td></tr>`;
     }
-    // ÔÚÒ³ÃæÉÏÏÔÊ¾±í¸ñµÄhtmlÄÚÈİ
-    document.getElementById("weatherTable").innerHTML = `<table border="1"><tr><th>ÇøÓò</th><th>Æ½¾ùÎÂ¶È</th><th>ÌìÆøÃèÊö</th></tr>${tableHtml}</table>`;
-    // Ê¹ÓÃChart.js´´½¨Ò»¸öÖù×´Í¼±í£¬ÏÔÊ¾²»Í¬ÇøÓòµÄÆ½¾ùÎÂ¶È
+    // åœ¨é¡µé¢ä¸Šæ˜¾ç¤ºè¡¨æ ¼çš„htmlå†…å®¹
+    document.getElementById("weatherTable").innerHTML = `<table border="1"><tr><th>åŒºåŸŸ</th><th>å¹³å‡æ¸©åº¦</th><th>å¤©æ°”æè¿°</th></tr>${tableHtml}</table>`;
+    // ä½¿ç”¨Chart.jsåˆ›å»ºä¸€ä¸ªæŸ±çŠ¶å›¾è¡¨ï¼Œæ˜¾ç¤ºä¸åŒåŒºåŸŸçš„å¹³å‡æ¸©åº¦
     new Chart(document.getElementById("tempChart"), {
       type: 'bar',
       data: {
         labels: areaNames,
         datasets: [{
-          label: 'Æ½¾ùÎÂ¶È',
+          label: 'å¹³å‡æ¸©åº¦',
           data: tempValues,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -81,6 +81,6 @@
     });
   }
 
-  // µ÷ÓÃº¯Êı
+  // è°ƒç”¨å‡½æ•°
   getWeather();
 </script>
