@@ -1,0 +1,86 @@
+<!-- 天气面板的html代码 -->
+<div class="weather-panel">
+  <h1>北京市不同区域的天气</h1>
+  <div id="weatherTable"></div>
+  <canvas id="tempChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // 定义一个数组，存储不同区域的名称和链接
+  const areas = [
+    {name: "东城区", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110101&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"},
+    {name: "西城区", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110102&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"},
+    {name: "朝阳区", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110105&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"},
+    {name: "昌平区", url: "https://restapi.amap.com/v3/weather/weatherInfo?city=110114&key=df5e77a660833b789fdf5b8e1f9d7050&output=JSON"}
+  ];
+
+  // 定义一个函数，获取天气数据并显示在表格和图表中
+  async function getWeather() {
+    // 定义一个空数组，存储区域名称
+    let areaNames = [];
+    // 定义一个空数组，存储平均温度
+    let tempValues = [];
+    // 定义一个空数组，存储天气描述
+    let descValues = [];
+    // 定义一个空字符串，存储表格的html内容
+    let tableHtml = "";
+    // 遍历区域数组
+    for (let area of areas) {
+      // 获取区域名称和链接
+      let name = area.name;
+      let url = area.url;
+      // 发送请求，获取天气数据
+      let response = await fetch(url);
+      let data = await response.json();
+      // 获取平均温度和天气描述
+      let temp = data.lives[0].temperature;
+      let desc = data.lives[0].weather;
+      // 将区域名称，平均温度和天气描述分别添加到对应的数组中
+      areaNames.push(name);
+      tempValues.push(temp);
+      descValues.push(desc);
+      // 将表格的每一行的html内容添加到表格字符串中
+      tableHtml += `<tr><td>${name}</td><td>${temp}℃</td><td>${desc}</td></tr>`;
+    }
+    // 在页面上显示表格的html内容
+    document.getElementById("weatherTable").innerHTML = `<table border="1"><tr><th>区域</th><th>平均温度</th><th>天气描述</th></tr>${tableHtml}</table>`;
+    // 使用Chart.js创建一个柱状图表，显示不同区域的平均温度
+    new Chart(document.getElementById("tempChart"), {
+      type: 'bar',
+      data: {
+        labels: areaNames,
+        datasets: [{
+          label: '平均温度',
+          data: tempValues,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+  // 调用函数
+  getWeather();
+</script>
